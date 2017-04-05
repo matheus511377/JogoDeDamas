@@ -29,6 +29,7 @@
             android:layout_weight="1"
             android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/a8"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -39,6 +40,7 @@
             android:layout_weight="1"
             android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/c8"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -48,6 +50,7 @@
         android:layout_weight="1"
         android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/f8"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -57,6 +60,7 @@
         android:layout_weight="1"
         android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/h8"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -75,6 +79,7 @@
             android:textSize="14dp"/>
 
         <ImageView
+            android:id="@+id/a7"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -85,6 +90,7 @@
             android:layout_weight="1"
             android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/c7"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -94,6 +100,7 @@
         android:layout_weight="1"
         android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/e7"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -103,6 +110,7 @@
         android:layout_weight="1"
         android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/g7"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -130,6 +138,7 @@
             android:layout_weight="1"
             android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/b6"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -140,6 +149,7 @@
             android:layout_weight="1"
             android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/d6"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -149,6 +159,7 @@
         android:layout_weight="1"
         android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/f6"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -158,6 +169,7 @@
         android:layout_weight="1"
         android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/h6"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -176,6 +188,7 @@
             android:textSize="14dp"/>
 
         <ImageView
+            android:id="@+id/a5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -186,6 +199,7 @@
             android:layout_weight="1"
             android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/c5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -195,6 +209,7 @@
         android:layout_weight="1"
         android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/e5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -204,6 +219,7 @@
         android:layout_weight="1"
         android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/g5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -231,6 +247,7 @@
             android:layout_weight="1"
             android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/b4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -241,6 +258,7 @@
             android:layout_weight="1"
             android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/d4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -250,6 +268,7 @@
         android:layout_weight="1"
         android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/f4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -259,6 +278,7 @@
         android:layout_weight="1"
         android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/h4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -277,6 +297,7 @@
             android:gravity="center_vertical"
             android:textSize="14dp"/>
         <ImageView
+            android:id="@+id/a3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -287,24 +308,29 @@
             android:layout_weight="1"
             android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/c3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/marron"/><ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/amarelo"/>
+            android:background="@color/marron"/>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/marron"/><ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/amarelo"/>
+            android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/e3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/marron"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/amarelo"/>
+        <ImageView
+            android:id="@+id/g3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -332,6 +358,7 @@
             android:layout_weight="1"
             android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/b2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -342,24 +369,29 @@
             android:layout_weight="1"
             android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/d2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/marron"/><ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/amarelo"/>
+            android:background="@color/marron"/>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/marron"/><ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/amarelo"/>
+            android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/f2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/marron"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/amarelo"/>
+        <ImageView
+            android:id="@+id/h2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -392,21 +424,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/marron"/><ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/amarelo"/>
+            android:id="@+id/c1"
+            android:background="@color/marron"/>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/marron"/><ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/amarelo"/>
+            android:background="@color/amarelo"/>
         <ImageView
+            android:id="@+id/e1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/marron"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/amarelo"/>
+        <ImageView
+            android:id="@+id/g1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
