@@ -11,16 +11,35 @@ import com.matheus.jogodedamas.R;
 public class Peca {
 
     private String strCor = "";
-    private ImageView imgPeca;
+    private int lngIdImagemPeca;
+    private ImageView img;
+
 
     Peca(String strCor){
         this.strCor = strCor;
-        if (strCor.equals("BRANCO"))
-            imgPeca.setImageResource(R.drawable.pecabranca);
 
+        if (strCor.equals("BRANCO"))
+            lngIdImagemPeca = R.drawable.pecabranca;
+
+        else if(strCor.equals("PRETO"))
+            lngIdImagemPeca = R.drawable.pecapreta;
         else
-            imgPeca.setImageResource(R.drawable.pecapreta);
+            lngIdImagemPeca = 0;
     }
 
+    public String getStrCor() {
+        return strCor;
+    }
 
+    public int getLngIdImagemPeca() {
+        return lngIdImagemPeca;
+    }
+
+    public ImageView getImg() {
+        return img;
+    }
+
+    public void setImg(ImageView img) {
+        this.img = img;
+    }
 }
