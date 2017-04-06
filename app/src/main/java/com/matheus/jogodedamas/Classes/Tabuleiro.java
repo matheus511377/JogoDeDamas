@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 public class Tabuleiro {
-    private List<Casa> tabuleiro = new ArrayList<Casa>();
+    private static List<Casa> tabuleiro = new ArrayList<Casa>();
     private List<String> listInicialBranca;
     private List<String> listInicialPreta;
     private List<String> listInicialDemaisCasas;
@@ -137,22 +137,28 @@ public class Tabuleiro {
 
         if (!(this.x.equals("")) && !(this.y.equals(""))){
             Casa casa1 = getCasa(this.y);
+            Casa casa2 = getCasa(this.x);
             tabuleiro.remove(casa1);
+            tabuleiro.remove(casa2);
+
             img = casa1.getImageView();
-            img.setImageResource(getCasa(this.x).getlngIdImagemPeca());
+            img.setImageResource(casa2.getlngIdImagemPeca());
             img.setBackgroundColor(context.getResources().getColor(R.color.marron));
             casa1.setImageView(img);
+            casa1.setLngIdImagemPeca(casa2.getlngIdImagemPeca());
             casa1.setCasaSelecionada(false);
             tabuleiro.add(casa1);
 
-            Casa casa2 = getCasa(this.x);
-            tabuleiro.remove(casa2);
+
+
             img = casa2.getImageView();
             img.setImageResource(0);
             img.setBackgroundColor(context.getResources().getColor(R.color.marron));
+            casa2.setLngIdImagemPeca(0);
             casa2.setImageView(img);
             casa2.setCasaSelecionada(false);
             tabuleiro.add(casa2);
+
             this.x = "";
             this.y = "";
 

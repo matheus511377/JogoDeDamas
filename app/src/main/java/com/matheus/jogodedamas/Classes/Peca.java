@@ -42,4 +42,8 @@ public class Peca {
     public void setImg(ImageView img) {
         this.img = img;
     }
+
+    public void setLngIdImagemPeca(int lngIdImagemPeca) {
+        this.lngIdImagemPeca = lngIdImagemPeca;
+    }
 }

@@ -44,5 +44,8 @@ public class Casa {
         peca.setImg(img);
     }
 
+    public void setLngIdImagemPeca(int i){
+        peca.setLngIdImagemPeca(i);
+    }
 
 }
