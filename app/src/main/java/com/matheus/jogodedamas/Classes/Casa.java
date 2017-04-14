@@ -47,5 +47,14 @@ public class Casa {
     public void setLngIdImagemPeca(int i){
         peca.setLngIdImagemPeca(i);
     }
+    public void setStrCor(String strCor) {
+        peca.setStrCor(strCor);
+    }
+    public String getStrCor(){
+        return peca.getStrCor();
+    }
+
+
+
 
 }

@@ -31,6 +31,10 @@ public class Peca {
         return strCor;
     }
 
+    public void setStrCor(String strCor) {
+        this.strCor = strCor;
+    }
+
     public int getLngIdImagemPeca() {
         return lngIdImagemPeca;
     }

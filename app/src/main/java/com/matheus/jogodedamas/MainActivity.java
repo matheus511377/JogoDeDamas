@@ -4,37 +4,35 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.matheus.jogodedamas.Classes.Casa;
-import com.matheus.jogodedamas.Classes.Peca;
-import com.matheus.jogodedamas.Classes.Tabuleiro;
+import com.matheus.jogodedamas.Classes.Jogo;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
 
-    Tabuleiro tabuleiro;
+    Jogo jogo;
     ImageView img;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        montarTabuleiro();
     }
 
     @Override
     protected void onStart(){
         super.onStart();
-        montarTabuleiro();
+
     }
 
 
     private void montarTabuleiro(){
-        tabuleiro = new Tabuleiro();
+        jogo = new Jogo(this);
 
-        // monta o tabuleiro
-        for (Casa item:tabuleiro.getTabuleiro()) {
+        // monta o jogo
+        for (Casa item: jogo.getTabuleiro()) {
 
             img = (ImageView) findViewById(getIdCampo(this,item.getPosicao()));
             if (!(img == null)){
@@ -58,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         img = (ImageView) findViewById(view.getId());
 
-        tabuleiro.mover(getNameCampo(this,view.getId()),img,this);
+        jogo.mover(getNameCampo(this,view.getId()),img);
 
     }
 }
