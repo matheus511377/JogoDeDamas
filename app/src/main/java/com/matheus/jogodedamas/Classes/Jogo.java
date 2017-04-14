@@ -28,19 +28,20 @@ public class Jogo {
     private Casa casa2;
     private boolean blnBrancasJogam = true;
 
-    public Jogo(Context contexto){
+    public Jogo(Context contexto) {
         this.contexto = contexto;
         inicializaTabuleiro();
     }
 
-    public List<Casa> getTabuleiro(){
+    public List<Casa> getTabuleiro() {
         return tabuleiro;
     }
 
-    private void setTabuleiro(Casa casa){
+    private void setTabuleiro(Casa casa) {
         tabuleiro.add(casa);
     }
-    private void setListInicialBranca(){
+
+    private void setListInicialBranca() {
         this.listInicialBranca = new ArrayList<String>();
         this.listInicialBranca.add("p11");
         this.listInicialBranca.add("p31");
@@ -56,7 +57,7 @@ public class Jogo {
         this.listInicialBranca.add("p73");
     }
 
-    private void setListInicialPreta(){
+    private void setListInicialPreta() {
         this.listInicialPreta = new ArrayList<String>();
         this.listInicialPreta.add("p26");
         this.listInicialPreta.add("p46");
@@ -72,7 +73,7 @@ public class Jogo {
         this.listInicialPreta.add("p88");
     }
 
-    private void setListInicialDemaisCasas(){
+    private void setListInicialDemaisCasas() {
         this.listInicialDemaisCasas = new ArrayList<String>();
 
         this.listInicialDemaisCasas.add("p24");
@@ -85,7 +86,7 @@ public class Jogo {
         this.listInicialDemaisCasas.add("p75");
     }
 
-    private void inicializaTabuleiro(){
+    private void inicializaTabuleiro() {
         setListInicialBranca();
         setListInicialPreta();
         setListInicialDemaisCasas();
@@ -93,29 +94,29 @@ public class Jogo {
         Peca peca;
         Casa casa;
 
-        for (String posicao:listInicialBranca){
+        for (String posicao : listInicialBranca) {
             peca = new Peca("BRANCO");
-            casa = new Casa(posicao,peca);
+            casa = new Casa(posicao, peca);
             setTabuleiro(casa);
         }
 
-        for (String posicao:listInicialPreta){
+        for (String posicao : listInicialPreta) {
             peca = new Peca("PRETO");
-            casa = new Casa(posicao,peca);
+            casa = new Casa(posicao, peca);
             setTabuleiro(casa);
         }
 
-        for (String posicao:listInicialDemaisCasas){
+        for (String posicao : listInicialDemaisCasas) {
             peca = new Peca("");
-            casa = new Casa(posicao,peca);
+            casa = new Casa(posicao, peca);
             setTabuleiro(casa);
         }
 
     }
 
-    public Boolean getSetCasaSelecionada(String posicao){
-        for (Casa item:tabuleiro) {
-            if (item.getPosicao().equals(posicao)){
+    public Boolean getSetCasaSelecionada(String posicao) {
+        for (Casa item : tabuleiro) {
+            if (item.getPosicao().equals(posicao)) {
                 item.setCasaSelecionada(!item.getCasaSelecionada());
                 return !item.getCasaSelecionada();
             }
@@ -124,24 +125,23 @@ public class Jogo {
         return false;
     }
 
-    private boolean podeSelecionarACasa(String strPosicao, Boolean casaVazia){
+    private boolean podeSelecionarACasa(String strPosicao, Boolean casaVazia) {
         int i = 0;
 
 
-        if (casaVazia){
+        if (casaVazia) {
             if ((getCasa(strPosicao).getStrCor().equals(""))) {
                 i = 1;
             }
-        }
-        else {
+        } else {
             casa1 = getCasa(strPosicao);
 
-            if (!(casa1.getStrCor().equals("")) && (blnBrancasJogam == true? casa1.getStrCor().equals("BRANCO") : casa1.getStrCor().equals("PRETO")) ) {
+            if (!(casa1.getStrCor().equals("")) && (blnBrancasJogam == true ? casa1.getStrCor().equals("BRANCO") : casa1.getStrCor().equals("PRETO"))) {
                 i = 1;
             }
         }
 
-        if (i == 0){
+        if (i == 0) {
             //Toast.makeText(contexto, "Jogada invalida (podeSelecionarACasa)", Toast.LENGTH_SHORT).show();
             //img.setBackgroundColor(contexto.getResources().getColor(R.color.marron));
             return false;
@@ -149,91 +149,117 @@ public class Jogo {
         return true;
     }
 
-    private Boolean verificaSeComePeca(String posicaoX, String posicaoY){
+    private Boolean verificaSeComePeca(String posicaoX, String posicaoY) {
+        List<Casa> listCasas = new ArrayList<Casa>();
+        Boolean podeComerPeca = true;
+        Boolean impar = true;
         String strX1 = "" + posicaoX.charAt(1);
         String strY1 = "" + posicaoX.charAt(2);
         String strX2 = "" + posicaoY.charAt(1);
         String strY2 = "" + posicaoY.charAt(2);
 
         int x1 = Integer.parseInt(strX1);
-        int y1= Integer.parseInt(strY1);
+        int y1 = Integer.parseInt(strY1);
         int x2 = Integer.parseInt(strX2);
-        int y2= Integer.parseInt(strY2);
+        int y2 = Integer.parseInt(strY2);
 
-        if(Math.abs(y1 - y2) > 1){
-            Casa c,c2;
+        if (Math.abs(y1 - y2) <= 1) {
+            return true;
+        }
+
+        Casa c, c2;
+
+        for (int i = 1; i <= Math.abs(y1 - y2); i++) {
             if (x1 < x2) {
                 if (y1 < y2) {
-                    c = getCasa("p"+(x1 + 1) + "" + (y1 + 1));
+                    c = getCasa("p" + (x1 + i) + "" + (y1 + i));
                 }
-                else{
-                    c = getCasa("p"+(x1 + 1) + "" + (y1 -1));
+                else {
+                    c = getCasa("p" + (x1 + i) + "" + (y1 - i));
                 }
             }
-            else{
-                if (y1 < y2){
-                    c = getCasa("p"+(x1 - 1) + "" + (y1 + 1));
+            else {
+                if (y1 < y2) {
+                    c = getCasa("p" + (x1 - i) + "" + (y1 + i));
                 }
-                else{
-                    c = getCasa("p"+(x1 - 1) + "" + (y1 - 1));
+                else {
+                    c = getCasa("p" + (x1 - i) + "" + (y1 - i));
                 }
 
             }
-            c2 = getCasa(posicaoX);
-            if (!(c.getStrCor().equals("")) && !(c.getStrCor().equals(c2.getStrCor()))){
-                tabuleiro.remove(c);
-                ImageView img = c.getImageView();
+            listCasas.add(c);
+        }
+        c2 = getCasa(posicaoX);
+        for (Casa casa : listCasas) {
+            //Primira Precisa ter a peca
+            //Segunda não pode ter a peca
+            if (impar) {
+                impar = false;
+                if ((casa.getStrCor().equals("")) || (casa.getStrCor().equals(c2.getStrCor()))) {
+                    podeComerPeca = false;
+                    break;
+                }
+            }
+            else {
+                impar = true;
+                if (!(casa.getStrCor().equals(""))) {
+                    podeComerPeca = false;
+                    break;
+                }
+
+            }
+        }
+
+
+        if (podeComerPeca) {
+            for (Casa casa : listCasas) {
+                tabuleiro.remove(casa);
+                ImageView img = casa.getImageView();
                 img.setImageResource(0);
-                c.setImageView(img);
-                c.setStrCor("");
-                tabuleiro.add(c);
-
-            }
-            else{
-                return false;
-
+                casa.setImageView(img);
+                casa.setStrCor("");
+                tabuleiro.add(casa);
             }
 
 
         }
+        else {
+            return false;
 
-
+        }
         return true;
 
-
-
     }
-    private Boolean validaPosicao(String posicaoX, String posicaoY){
+
+    private Boolean validaPosicao(String posicaoX, String posicaoY) {
         List<String> posicoesPossiveis = getPosicoesPosiveis(posicaoX);
 
         Boolean posicaoValida = false;
-        for (String strPosicao:posicoesPossiveis)
-        {
-            if((strPosicao.equals(posicaoY))){
+        for (String strPosicao : posicoesPossiveis) {
+            if ((strPosicao.equals(posicaoY))) {
                 posicaoValida = true;
             }
         }
 
-        if (!posicaoValida){
+        if (!posicaoValida) {
             //Toast.makeText(contexto, "Jogada invalida(validaPosicao)", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
     }
 
-    public void mover(String posicao, ImageView img){
+    public void mover(String posicao, ImageView img) {
         if (!(getSetCasaSelecionada(posicao))) {
 
-            if(this.x.equals("")) {
+            if (this.x.equals("")) {
                 if (podeSelecionarACasa(posicao, false)) {
                     this.x = posicao;
                     img.setBackgroundColor(contexto.getResources().getColor(R.color.colorPrimary));
                 }
-            }
-            else {
-                if (podeSelecionarACasa(posicao,true)){
-                    if (validaPosicao(this.x,posicao)) {
-                        if (verificaSeComePeca(this.x,posicao)) {
+            } else {
+                if (podeSelecionarACasa(posicao, true)) {
+                    if (validaPosicao(this.x, posicao)) {
+                        if (verificaSeComePeca(this.x, posicao)) {
                             this.y = posicao;
                             img.setBackgroundColor(contexto.getResources().getColor(R.color.colorPrimary));
                         }
@@ -241,18 +267,16 @@ public class Jogo {
                     }
                 }
             }
-        }
-        else{
+        } else {
             img.setBackgroundColor(contexto.getResources().getColor(R.color.marron));
             if (this.x.equals(posicao)) {
                 this.x = "";
-            }
-            else{
+            } else {
                 this.y = "";
             }
         }
 
-        if (!(this.x.equals("")) && !(this.y.equals(""))){
+        if (!(this.x.equals("")) && !(this.y.equals(""))) {
             Casa casa1 = getCasa(this.y);
             Casa casa2 = getCasa(this.x);
 
@@ -285,16 +309,16 @@ public class Jogo {
         }
     }
 
-    private Casa getCasa(String posicao){
-        for (Casa item:tabuleiro) {
-            if (item.getPosicao().equals(posicao)){
+    private Casa getCasa(String posicao) {
+        for (Casa item : tabuleiro) {
+            if (item.getPosicao().equals(posicao)) {
                 return item;
             }
         }
         return null;
     }
 
-    private List<String> getPosicoesPosiveis(String posicao){
+    private List<String> getPosicoesPosiveis(String posicao) {
         List<String> posicoesPossiveis = new ArrayList<String>();
         casa1 = getCasa(posicao);
 
