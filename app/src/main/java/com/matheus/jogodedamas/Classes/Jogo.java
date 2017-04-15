@@ -18,9 +18,6 @@ public class Jogo {
     private List<String> listInicialBranca;
     private List<String> listInicialPreta;
     private List<String> listInicialDemaisCasas;
-    private List<String> listLetras;
-    private List<Integer> listNumeros;
-
     private Context contexto;
     private String x = "";
     private String y = "";
