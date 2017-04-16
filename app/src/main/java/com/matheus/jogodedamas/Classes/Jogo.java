@@ -149,6 +149,7 @@ public class Jogo {
     private Boolean verificaSeComePeca(String posicaoX, String posicaoY) {
         List<Casa> listCasas = new ArrayList<Casa>();
         Boolean podeComerPeca = true;
+        Boolean damaComendo = false;
         Boolean impar = true;
         String strX1 = "" + posicaoX.charAt(1);
         String strY1 = "" + posicaoX.charAt(2);
@@ -193,8 +194,10 @@ public class Jogo {
             if (impar) {
                 impar = false;
                 if ((casa.getStrCor().equals("")) || (casa.getStrCor().equals(c2.getStrCor()))) {
-                    podeComerPeca = false;
-                    break;
+
+                        podeComerPeca = false;
+                        break;
+
                 }
             }
             else {
@@ -245,6 +248,15 @@ public class Jogo {
         return true;
     }
 
+    public Boolean viraDama(String strPosicao){
+        String strX1 = "" + strPosicao.charAt(2);
+
+        if (((Integer.parseInt(strX1) == 8) && blnBrancasJogam) ||((Integer.parseInt(strX1) == 1) && !blnBrancasJogam) ){
+
+            return true;
+        }
+        return false;
+    }
     public void mover(String posicao, ImageView img) {
         if (!(getSetCasaSelecionada(posicao))) {
 
@@ -282,12 +294,30 @@ public class Jogo {
 
             img = casa1.getImageView();
             img.setImageResource(casa2.getlngIdImagemPeca());
+
+            if (viraDama(casa1.getPosicao())){
+                if (blnBrancasJogam) {
+                    img.setImageResource(R.drawable.damabranca);
+                    casa1.setLngIdImagemPeca(R.drawable.damabranca);
+                }
+                else{
+                    img.setImageResource(R.drawable.damapreta);
+                    casa1.setLngIdImagemPeca(R.drawable.damapreta);
+                }
+                casa1.setDama(true);
+            }
+            else{
+                casa1.setDama(casa2.getDama());
+                casa1.setLngIdImagemPeca(casa2.getlngIdImagemPeca());
+            }
+
             img.setBackgroundColor(contexto.getResources().getColor(R.color.marron));
             casa1.setImageView(img);
             casa1.setStrCor(casa2.getStrCor());
-            casa1.setLngIdImagemPeca(casa2.getlngIdImagemPeca());
             casa1.setCasaSelecionada(false);
             tabuleiro.add(casa1);
+            //Verifica e seta se vira dama
+
 
 
             img = casa2.getImageView();
@@ -334,7 +364,7 @@ public class Jogo {
             xAxiliar++;
             yAxiliar++;
             //pretas não podem andar para traz
-            if (!(casa1.getStrCor().equals("PRETO") && (Math.abs(yAxiliar - y) == 1))) {
+            if (!(casa1.getStrCor().equals("PRETO") && (Math.abs(yAxiliar - y) == 1) && !casa1.getDama())) {
                 posicoesPossiveis.add("p" + (xAxiliar) + "" + (yAxiliar));
             }
         }
@@ -347,7 +377,7 @@ public class Jogo {
             xAxiliar--;
             yAxiliar++;
             //pretas não podem andar para traz
-            if (!(casa1.getStrCor().equals("PRETO") && (Math.abs(yAxiliar - y) == 1))) {
+            if (!(casa1.getStrCor().equals("PRETO") && (Math.abs(yAxiliar - y) == 1) && !casa1.getDama())) {
                 posicoesPossiveis.add("p" + (xAxiliar) + "" + (yAxiliar));
             }
         }
@@ -360,7 +390,7 @@ public class Jogo {
             xAxiliar++;
             yAxiliar--;
             //Brancas não podem andar para traz
-            if (!(casa1.getStrCor().equals("BRANCO") && (Math.abs(yAxiliar - y) == 1))) {
+            if (!(casa1.getStrCor().equals("BRANCO") && (Math.abs(yAxiliar - y) == 1) && !casa1.getDama()) ) {
                 posicoesPossiveis.add("p" + (xAxiliar) + "" + (yAxiliar));
             }
         }
@@ -373,7 +403,7 @@ public class Jogo {
             xAxiliar--;
             yAxiliar--;
             //Brancas não podem andar para traz
-            if (!(casa1.getStrCor().equals("BRANCO") && (Math.abs(yAxiliar - y) == 1))) {
+            if (!(casa1.getStrCor().equals("BRANCO") && (Math.abs(yAxiliar - y) == 1) && !casa1.getDama())) {
                 posicoesPossiveis.add("p" + (xAxiliar) + "" + (yAxiliar));
             }
         }

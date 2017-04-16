@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.matheus.jogodedamas.Classes.Casa;
 import com.matheus.jogodedamas.Classes.Jogo;
 
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
 
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         montarTabuleiro();
+
     }
 
     @Override

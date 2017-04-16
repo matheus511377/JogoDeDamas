@@ -13,7 +13,15 @@ public class Peca {
     private String strCor = "";
     private int lngIdImagemPeca;
     private ImageView img;
+    private Boolean dama = false;
 
+    public Boolean getDama() {
+        return dama;
+    }
+
+    public void setDama(Boolean dama) {
+        this.dama = dama;
+    }
 
     Peca(String strCor){
         this.strCor = strCor;

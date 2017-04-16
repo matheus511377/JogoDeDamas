@@ -3,6 +3,8 @@ package com.matheus.jogodedamas.Classes;
 import android.media.Image;
 import android.widget.ImageView;
 
+import io.realm.RealmObject;
+
 /**
  * Created by Matheus on 05/04/2017.
  */
@@ -19,6 +21,13 @@ public class Casa {
         this.peca = peca;
     }
 
+    public void setDama(Boolean dama){
+        peca.setDama(dama);
+    }
+
+    public Boolean getDama(){
+        return peca.getDama();
+    }
     public String getPosicao(){
         return this.strPosicao;
     }
