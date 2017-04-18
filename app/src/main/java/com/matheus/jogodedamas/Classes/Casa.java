@@ -3,7 +3,7 @@ package com.matheus.jogodedamas.Classes;
 import android.media.Image;
 import android.widget.ImageView;
 
-import io.realm.RealmObject;
+
 
 /**
  * Created by Matheus on 05/04/2017.

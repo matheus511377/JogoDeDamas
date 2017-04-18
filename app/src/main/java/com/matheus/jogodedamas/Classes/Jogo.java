@@ -150,6 +150,7 @@ public class Jogo {
         List<Casa> listCasas = new ArrayList<Casa>();
         Boolean podeComerPeca = true;
         Boolean damaComendo = false;
+        Boolean primeiraCasaVazia = false;
         Boolean impar = true;
         String strX1 = "" + posicaoX.charAt(1);
         String strY1 = "" + posicaoX.charAt(2);
@@ -188,25 +189,73 @@ public class Jogo {
             listCasas.add(c);
         }
         c2 = getCasa(posicaoX);
+
+
         for (Casa casa : listCasas) {
             //Primira Precisa ter a peca
             //Segunda não pode ter a peca
-            if (impar) {
-                impar = false;
-                if ((casa.getStrCor().equals("")) || (casa.getStrCor().equals(c2.getStrCor()))) {
+
+            //se for dama
+            if(c2.getDama()){
+               if (!casa.getStrCor().equals("")){
+                   if(!(casa.getStrCor().equals(c2.getStrCor()))){
+                       damaComendo = true;
+                   }
+                   else{
+                       podeComerPeca = false;
+                       break;
+                   }
+
+               }
+
+               if(damaComendo){
+                   if (impar) {
+                       impar = false;
+                       if ((casa.getStrCor().equals("")) || (casa.getStrCor().equals(c2.getStrCor()))) {
+                          // podeComerPeca = false;
+                           primeiraCasaVazia = true;
+                           //break;
+                       }
+                       else{
+                           if(primeiraCasaVazia){
+                               primeiraCasaVazia = false;
+                           }
+                       }
+                   } else {
+                       impar = true;
+                       if (!(casa.getStrCor().equals(""))) {
+                           podeComerPeca = false;
+                           //break;
+                       }
+                       else {
+                           primeiraCasaVazia = true;
+                       }
+
+                   }
+                   if(primeiraCasaVazia = false){
+                       podeComerPeca = false;
+                       break;
+                   }
+               }
+            }
+            else {
+
+                if (impar) {
+                    impar = false;
+                    if ((casa.getStrCor().equals("")) || (casa.getStrCor().equals(c2.getStrCor()))) {
 
                         podeComerPeca = false;
                         break;
 
-                }
-            }
-            else {
-                impar = true;
-                if (!(casa.getStrCor().equals(""))) {
-                    podeComerPeca = false;
-                    break;
-                }
+                    }
+                } else {
+                    impar = true;
+                    if (!(casa.getStrCor().equals(""))) {
+                        podeComerPeca = false;
+                        break;
+                    }
 
+                }
             }
         }
 
