@@ -212,9 +212,7 @@ public class Jogo {
                    if (impar) {
                        impar = false;
                        if ((casa.getStrCor().equals("")) || (casa.getStrCor().equals(c2.getStrCor()))) {
-                          // podeComerPeca = false;
                            primeiraCasaVazia = true;
-                           //break;
                        }
                        else{
                            if(primeiraCasaVazia){
@@ -225,7 +223,6 @@ public class Jogo {
                        impar = true;
                        if (!(casa.getStrCor().equals(""))) {
                            podeComerPeca = false;
-                           //break;
                        }
                        else {
                            primeiraCasaVazia = true;
@@ -383,6 +380,9 @@ public class Jogo {
             blnBrancasJogam = !blnBrancasJogam;
 
         }
+        if(!getFimDeJogo().equals("")){
+            Toast.makeText(contexto, "FIM DE JOGO " + getFimDeJogo() + " GANHARAM", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private Casa getCasa(String posicao) {
@@ -459,6 +459,32 @@ public class Jogo {
         return posicoesPossiveis;
     }
 
+    public String getFimDeJogo(){
+        Boolean blnFimDeJogoBrancas = false;
+        Boolean blnFimDeJogoPretas = false;
+        for (Casa casa:tabuleiro) {
+            if (casa.getStrCor().equals("BRANCO")){
+                blnFimDeJogoBrancas = true;
+            }
+            if (casa.getStrCor().equals("PRETO")){
+                blnFimDeJogoPretas = true;
+            }
+            if (blnFimDeJogoBrancas && blnFimDeJogoPretas){
+                break;
+            }
+        }
+        if(blnFimDeJogoBrancas && !blnFimDeJogoPretas){
+            return "BRANCO";
+        }
+        else if(blnFimDeJogoPretas && !blnFimDeJogoBrancas){
+            return "PRETO";
+        }
+        else{
+            return "";
+        }
+
+    }
 }
+
 
 
