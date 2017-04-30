@@ -1,11 +1,18 @@
 package com.matheus.jogodedamas;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
+import android.widget.EditText;
+
+import com.matheus.jogodedamas.Classes.Jogador;
 
 public class InicialActivity extends AppCompatActivity {
+    private String m_Text = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,7 +21,7 @@ public class InicialActivity extends AppCompatActivity {
     }
 
     public void jogardedois(View v){
-        Intent it = new Intent(this, MainActivity.class);
-        startActivity(it);
+        //Intent it = new Intent(this, MainActivity.class);
+        //startActivity(it);
     }
 }
