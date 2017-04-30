@@ -21,7 +21,13 @@ public class InicialActivity extends AppCompatActivity {
     }
 
     public void jogardedois(View v){
-        //Intent it = new Intent(this, MainActivity.class);
-        //startActivity(it);
+        Intent it = new Intent(this, JogadoresActivity.class);
+        startActivity(it);
     }
+    public void jogadorVsCpu(View v){
+        Intent it = new Intent(this, JogadoresActivity.class);
+        it.putExtra("CPU",true);
+        startActivity(it);
+    }
+
 }

@@ -18,7 +18,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:id="@+id/txtJogador1"
             />
         <TextView
             android:layout_width="match_parent"
@@ -27,11 +27,12 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:id="@+id/txtJogador2"
             />
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="jogar"
             android:text="jogar"/>
     </LinearLayout>
 

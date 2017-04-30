@@ -23,10 +23,14 @@ public class Jogo {
     private String y = "";
     private Casa casa1;
     private Casa casa2;
+    Jogador jogador1;
+    Jogador jogador2;
     private boolean blnBrancasJogam = true;
 
-    public Jogo(Context contexto) {
+    public Jogo(Context contexto, Jogador jogador1,Jogador jogador2) {
         this.contexto = contexto;
+        this.jogador1 = jogador1;
+        this.jogador2 = jogador2;
         inicializaTabuleiro();
     }
 
