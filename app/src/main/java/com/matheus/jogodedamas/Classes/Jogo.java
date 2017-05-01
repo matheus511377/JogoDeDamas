@@ -384,6 +384,77 @@ public class Jogo {
             blnBrancasJogam = !blnBrancasJogam;
 
         }
+       if((!blnBrancasJogam) && (jogador2.getNome().equals("CPU"))){
+           //Seleciona uma peca preta (sorteada)
+           Boolean blnMoveu = false;
+           for (Casa casa:tabuleiro) {
+               if (casa.getStrCor().equals("PRETO")){
+                   List<String> posicoesPossiveis = getPosicoesPosiveis(casa.getPosicao());
+                   for (String strposicao:posicoesPossiveis) {
+                       if (podeSelecionarACasa(strposicao, true)) {
+                           if (validaPosicao(casa.getPosicao(), strposicao)) {
+                               if (verificaSeComePeca(casa.getPosicao(), strposicao)) {
+                                   blnMoveu = true;
+
+                                   //copiei la de cima mas poderia ser diferente
+                                   Casa casa1 = getCasa(strposicao);
+                                   Casa casa2 = getCasa(casa.getPosicao());
+
+                                   tabuleiro.remove(casa1);
+                                   tabuleiro.remove(casa2);
+
+                                   img = casa1.getImageView();
+                                   img.setImageResource(casa2.getlngIdImagemPeca());
+
+                                   if (viraDama(casa1.getPosicao())) {
+                                       if (blnBrancasJogam) {
+                                           img.setImageResource(R.drawable.damabranca);
+                                           casa1.setLngIdImagemPeca(R.drawable.damabranca);
+                                       } else {
+                                           img.setImageResource(R.drawable.damapreta);
+                                           casa1.setLngIdImagemPeca(R.drawable.damapreta);
+                                       }
+                                       casa1.setDama(true);
+                                   } else {
+                                       casa1.setDama(casa2.getDama());
+                                       casa1.setLngIdImagemPeca(casa2.getlngIdImagemPeca());
+                                   }
+
+                                   img.setBackgroundColor(contexto.getResources().getColor(R.color.marron));
+                                   casa1.setImageView(img);
+                                   casa1.setStrCor(casa2.getStrCor());
+                                   casa1.setCasaSelecionada(false);
+                                   tabuleiro.add(casa1);
+                                   //Verifica e seta se vira dama
+
+
+                                   img = casa2.getImageView();
+                                   img.setImageResource(0);
+                                   img.setBackgroundColor(contexto.getResources().getColor(R.color.marron));
+                                   casa2.setStrCor("");
+                                   casa2.setLngIdImagemPeca(0);
+                                   casa2.setImageView(img);
+                                   casa2.setCasaSelecionada(false);
+                                   tabuleiro.add(casa2);
+
+                                   this.x = "";
+                                   this.y = "";
+                                   blnBrancasJogam = !blnBrancasJogam;
+                                   //fim
+
+                                   break;
+                               }
+                           }
+                       }
+                   }
+                   if (blnMoveu){
+                       break;
+                   }
+               }
+
+           }
+       }
+
         if(!getFimDeJogo().equals("")){
             Toast.makeText(contexto, "FIM DE JOGO " + getFimDeJogo() + " GANHARAM", Toast.LENGTH_SHORT).show();
         }
