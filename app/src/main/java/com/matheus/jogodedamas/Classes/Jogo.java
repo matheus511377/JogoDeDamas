@@ -18,6 +18,7 @@ public class Jogo {
     private List<String> listInicialBranca;
     private List<String> listInicialPreta;
     private List<String> listInicialDemaisCasas;
+    private List<Lance> listLance = new ArrayList<>();
     private Context contexto;
     private String x = "";
     private String y = "";
@@ -339,6 +340,12 @@ public class Jogo {
             Casa casa1 = getCasa(this.y);
             Casa casa2 = getCasa(this.x);
 
+            //Lance
+            Lance lance = new Lance();
+            lance.setPeca(casa2.getPeca());
+            lance.setLance(getLance(this.x) + "-" + getLance(this.y));
+            listLance.add(lance);
+
             tabuleiro.remove(casa1);
             tabuleiro.remove(casa2);
 
@@ -557,6 +564,26 @@ public class Jogo {
         else{
             return "";
         }
+
+    }
+    private String getLance(String x){
+        String strX = "" + x.charAt(1);
+        String strY = "" + x.charAt(2);
+
+        int intX = Integer.parseInt(strX);
+        int intY = Integer.parseInt(strY);
+
+        switch (intX) {
+            case 1: strX = "A" + intY;
+            case 2: strX = "B" + intY;
+            case 3: strX = "C" + intY;
+            case 4: strX = "D" + intY;
+            case 5: strX = "E" + intY;
+            case 6: strX = "F" + intY;
+            case 7: strX = "G" + intY;
+            case 8: strX = "H" + intY;
+        }
+        return strX;
 
     }
 }

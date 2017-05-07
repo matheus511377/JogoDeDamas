@@ -14,7 +14,9 @@ public class Casa {
     private Boolean casaSelecionada = false;
     private Peca peca;
 
-
+    public Peca getPeca() {
+        return peca;
+    }
 
     Casa(String strPosicao, Peca peca){
         this.strPosicao = strPosicao;
