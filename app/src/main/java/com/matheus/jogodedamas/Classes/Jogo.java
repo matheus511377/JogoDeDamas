@@ -1,10 +1,13 @@
 package com.matheus.jogodedamas.Classes;
 
 import android.content.Context;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.matheus.jogodedamas.R;
+import com.matheus.jogodedamas.adapterLances;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +23,7 @@ public class Jogo {
     private List<String> listInicialDemaisCasas;
     private List<Lance> listLance = new ArrayList<>();
     private Context contexto;
+    private adapterLances adapter;
     private String x = "";
     private String y = "";
     private Casa casa1;
@@ -28,10 +32,12 @@ public class Jogo {
     Jogador jogador2;
     private boolean blnBrancasJogam = true;
 
-    public Jogo(Context contexto, Jogador jogador1,Jogador jogador2) {
+    public Jogo(Context contexto, Jogador jogador1, Jogador jogador2, adapterLances adapter, List<Lance> lances ) {
         this.contexto = contexto;
         this.jogador1 = jogador1;
         this.jogador2 = jogador2;
+        this.listLance = lances;
+        this.adapter = adapter;
         inicializaTabuleiro();
     }
 
@@ -346,6 +352,7 @@ public class Jogo {
             lance.setLance(getLance(this.x) + "-" + getLance(this.y));
             listLance.add(lance);
 
+
             tabuleiro.remove(casa1);
             tabuleiro.remove(casa2);
 
@@ -443,6 +450,11 @@ public class Jogo {
                                    casa2.setImageView(img);
                                    casa2.setCasaSelecionada(false);
                                    tabuleiro.add(casa2);
+
+                                   Lance lance = new Lance();
+                                   lance.setPeca(casa2.getPeca());
+                                   lance.setLance(getLance(casa.getPosicao()) + "-" + getLance(strposicao));
+                                   listLance.add(lance);
 
                                    this.x = "";
                                    this.y = "";
@@ -574,14 +586,30 @@ public class Jogo {
         int intY = Integer.parseInt(strY);
 
         switch (intX) {
-            case 1: strX = "A" + intY;
-            case 2: strX = "B" + intY;
-            case 3: strX = "C" + intY;
-            case 4: strX = "D" + intY;
-            case 5: strX = "E" + intY;
-            case 6: strX = "F" + intY;
-            case 7: strX = "G" + intY;
-            case 8: strX = "H" + intY;
+            case 1:
+                strX = "A" + intY;
+                break;
+            case 2:
+                strX = "B" + intY;
+                break;
+            case 3:
+                strX = "C" + intY;
+                break;
+            case 4:
+                strX = "D" + intY;
+                break;
+            case 5:
+                strX = "E" + intY;
+                break;
+            case 6:
+                strX = "F" + intY;
+                break;
+            case 7:
+                strX = "G" + intY;
+                break;
+            case 8:
+                strX = "H" + intY;
+                break;
         }
         return strX;
 
