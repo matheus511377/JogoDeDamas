@@ -9,11 +9,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.matheus.jogodedamas.Classes.Casa;
+import com.matheus.jogodedamas.Classes.Contabilista;
 import com.matheus.jogodedamas.Classes.Jogador;
 import com.matheus.jogodedamas.Classes.Jogo;
 import com.matheus.jogodedamas.Classes.Lance;
+import com.matheus.jogodedamas.Classes.Partida;
 import com.matheus.jogodedamas.Classes.Peca;
 
 import java.util.ArrayList;
@@ -22,13 +25,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    Jogo jogo;
-    ImageView img;
-    Jogador jogador1;
-    Jogador jogador2;
-    ListView listaPecas;
-    List<Lance> listaLances = new ArrayList<>();
-    adapterLances adapter;
+    private Jogo jogo;
+    private ImageView img;
+    private Jogador jogador1;
+    private Jogador jogador2;
+    private ListView listaPecas;
+    private List<Lance> listaLances = new ArrayList<>();
+    private adapterLances adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +46,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         adapter = new adapterLances(listaLances,this);
         listaPecas.setAdapter(adapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
     }
 
@@ -53,6 +61,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void montarTabuleiro(){
 
         jogo = new Jogo(this,jogador1,jogador2,adapter,listaLances);
+        Partida partida = new Partida();
+        partida.setJogo(jogo);
+        Contabilista.setPartida(partida);
 
         // monta o jogo
         for (Casa item: jogo.getTabuleiro()) {
@@ -81,6 +92,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         jogo.mover(getNameCampo(this,view.getId()),img);
         adapter.notifyDataSetChanged();
+
+        if(!jogo.getFimDeJogo().equals("")){
+            Toast.makeText(this, "FIM DE JOGO " + jogo.getFimDeJogo() + " GANHARAM", Toast.LENGTH_SHORT).show();
+            Intent it = new Intent(this,PlacarActivity.class);
+            it.putExtra("CPU",jogo.getFimDeJogo() + " GANHARAM");
+            startActivity(it);
+            finish();
+        }
 
     }
 }

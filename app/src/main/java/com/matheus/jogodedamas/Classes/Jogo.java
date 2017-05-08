@@ -1,11 +1,14 @@
 package com.matheus.jogodedamas.Classes;
 
 import android.content.Context;
+import android.content.Intent;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.matheus.jogodedamas.MainActivity;
+import com.matheus.jogodedamas.PlacarActivity;
 import com.matheus.jogodedamas.R;
 import com.matheus.jogodedamas.adapterLances;
 
@@ -17,7 +20,7 @@ import java.util.List;
  */
 
 public class Jogo {
-    private static List<Casa> tabuleiro = new ArrayList<Casa>();
+    private List<Casa> tabuleiro = new ArrayList<Casa>();
     private List<String> listInicialBranca;
     private List<String> listInicialPreta;
     private List<String> listInicialDemaisCasas;
@@ -123,14 +126,17 @@ public class Jogo {
     }
 
     public Boolean getSetCasaSelecionada(String posicao) {
+        boolean retorno = false;
         for (Casa item : tabuleiro) {
             if (item.getPosicao().equals(posicao)) {
                 item.setCasaSelecionada(!item.getCasaSelecionada());
-                return !item.getCasaSelecionada();
+                retorno = !item.getCasaSelecionada();
+                break;
+
             }
 
         }
-        return false;
+        return retorno;
     }
 
     private boolean podeSelecionarACasa(String strPosicao, Boolean casaVazia) {
@@ -473,10 +479,6 @@ public class Jogo {
 
            }
        }
-
-        if(!getFimDeJogo().equals("")){
-            Toast.makeText(contexto, "FIM DE JOGO " + getFimDeJogo() + " GANHARAM", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private Casa getCasa(String posicao) {
@@ -558,9 +560,11 @@ public class Jogo {
         Boolean blnFimDeJogoPretas = false;
         for (Casa casa:tabuleiro) {
             if (casa.getStrCor().equals("BRANCO")){
+
                 blnFimDeJogoBrancas = true;
             }
             if (casa.getStrCor().equals("PRETO")){
+
                 blnFimDeJogoPretas = true;
             }
             if (blnFimDeJogoBrancas && blnFimDeJogoPretas){
@@ -568,9 +572,13 @@ public class Jogo {
             }
         }
         if(blnFimDeJogoBrancas && !blnFimDeJogoPretas){
+            jogador1.setNumeroVitorias(1);
+            jogador2.setNumeroDerrotas(1);
             return "BRANCO";
         }
         else if(blnFimDeJogoPretas && !blnFimDeJogoBrancas){
+            jogador2.setNumeroVitorias(1);
+            jogador1.setNumeroDerrotas(1);
             return "PRETO";
         }
         else{
@@ -613,6 +621,14 @@ public class Jogo {
         }
         return strX;
 
+    }
+
+    public Jogador getJogador1() {
+        return jogador1;
+    }
+
+    public Jogador getJogador2() {
+        return jogador2;
     }
 }
 

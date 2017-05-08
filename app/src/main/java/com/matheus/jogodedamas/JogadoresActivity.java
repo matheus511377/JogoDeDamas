@@ -64,5 +64,6 @@ public class JogadoresActivity extends AppCompatActivity {
         b.putSerializable("Jogador2",jogador2);
         it.putExtras(b);
         startActivity(it);
+        finish();
     }
 }

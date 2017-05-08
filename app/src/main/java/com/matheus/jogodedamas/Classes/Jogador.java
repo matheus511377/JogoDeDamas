@@ -8,6 +8,24 @@ import java.io.Serializable;
 
 public class Jogador implements Serializable{
     private String nome;
+    private Integer numeroVitorias;
+    private Integer numeroDerrotas;
+
+    public Integer getNumeroVitorias() {
+        return numeroVitorias;
+    }
+
+    public void setNumeroVitorias(Integer numeroVitorias) {
+        this.numeroVitorias = numeroVitorias;
+    }
+
+    public Integer getNumeroDerrotas() {
+        return numeroDerrotas;
+    }
+
+    public void setNumeroDerrotas(Integer numeroDerrotas) {
+        this.numeroDerrotas = numeroDerrotas;
+    }
 
     public String getNome() {
         return nome;
