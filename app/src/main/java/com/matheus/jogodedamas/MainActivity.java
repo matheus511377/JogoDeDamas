@@ -11,6 +11,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.matheus.jogodedamas.Classes.Casa;
 import com.matheus.jogodedamas.Classes.Contabilista;
 import com.matheus.jogodedamas.Classes.Jogador;
@@ -33,6 +35,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ListView listaPecas;
     private List<Lance> listaLances = new ArrayList<>();
     private adapterLances adapter;
+    private TextView t;
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRefBranco;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.jogador1 = (Jogador) intent.getSerializableExtra("Jogador1");
         this.jogador2 = (Jogador) intent.getSerializableExtra("Jogador2");
         this.sala = intent.getIntExtra("sala",0);
-        TextView t = (TextView) findViewById(R.id.txtJogadores);
+        t = (TextView) findViewById(R.id.txtJogadores);
         t.setText(jogador1.getNome() + " VS " + jogador2.getNome());
         montarTabuleiro();
         listaPecas = (ListView) findViewById(R.id.lista);
@@ -62,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     private void montarTabuleiro(){
 
-        jogo = new Jogo(this,jogador1,jogador2,adapter,listaLances, sala);
+        jogo = new Jogo(this,jogador1,jogador2,adapter,listaLances, sala,t);
         Partida partida = new Partida();
         partida.setJogo(jogo);
         Contabilista.setPartida(partida);
@@ -75,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 img.setImageResource(item.getlngIdImagemPeca());
                 img.setOnClickListener(this);
                 item.setImageView(img);
+
 
             }
         }
@@ -100,7 +106,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent it = new Intent(this,PlacarActivity.class);
             it.putExtra("CPU",jogo.getFimDeJogo() + " GANHARAM");
             startActivity(it);
+            myRefBranco = database.getReference("jogo/"+sala);
+            myRefBranco.child("j1").setValue("");
+            myRefBranco.child("j2").setValue("");
+            myRefBranco.child("preto").setValue("");
+            myRefBranco.child("branco").setValue("");
             finish();
+
         }
 
     }

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +20,8 @@ import com.matheus.jogodedamas.MainActivity;
 import com.matheus.jogodedamas.PlacarActivity;
 import com.matheus.jogodedamas.R;
 import com.matheus.jogodedamas.adapterLances;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,24 +48,28 @@ public class Jogo {
     Jogador jogador2;
     String lanceAnterior="";
     private boolean blnBrancasJogam = true;
+    private TextView t;
     FirebaseUser currentUser;
     private FirebaseAuth mAuth;
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     final DatabaseReference myRefBranco;
     final DatabaseReference myRefPreto;
+    final DatabaseReference myRef;
 
 
-    public Jogo(final Context contexto, final Jogador jogador1, final Jogador jogador2, adapterLances adapter, List<Lance> lances, final int sala) {
+    public Jogo(final Context contexto, final Jogador jogador1, final Jogador jogador2, adapterLances adapter, List<Lance> lances, final int sala, final TextView t) {
         this.contexto = contexto;
         this.jogador1 = jogador1;
         this.jogador2 = jogador2;
         this.listLance = lances;
         this.adapter = adapter;
         this.sala = sala;
-
+        this.t = t;
         inicializaTabuleiro();
         myRefBranco = database.getReference("jogo/"+sala+"/branco");
         myRefPreto = database.getReference("jogo/"+sala+"/preto");
+        myRef = database.getReference("jogo/"+sala);
+
         if(sala>0){
             mAuth = FirebaseAuth.getInstance();
             currentUser = mAuth.getCurrentUser();
@@ -136,7 +143,6 @@ public class Jogo {
                             lance.setPeca(casa2.getPeca());
                             lance.setLance(getLance(casa1.getPosicao()) + "-" + getLance( post.toString().substring(4,7)));
                             listLance.add(lance);
-
 
                             blnBrancasJogam = !blnBrancasJogam;
                             //fim
@@ -241,6 +247,37 @@ public class Jogo {
             };
             myRefPreto.addValueEventListener(postListener2);
 
+            ValueEventListener postListener3 = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // Get Post object and use the values to update the UI
+                    if(sala==0){
+                        return;
+                    }
+                    HashMap<String,String> post = ( HashMap<String,String> ) dataSnapshot.getValue();
+                    if(post!= null){
+                        if(post.get("j1")!=null) {
+                            if (!post.get("j1").toString().equals("")) {
+                                jogador1.setNome(post.get("j1").toString());
+                            }
+                        }
+                        if(post.get("j2")!=null) {
+                            if (!post.get("j2").toString().equals("")) {
+                                jogador2.setNome(post.get("j2").toString());
+                            }
+                        }
+                        t.setText(jogador1.getNome() + " VS " + jogador2.getNome());
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Getting Post failed, log a message
+                    Log.w("T", "loadPost:onCancelled", databaseError.toException());
+                    // ...
+                }
+            };
+            myRef.addValueEventListener(postListener3);
         }
     }
 
@@ -353,6 +390,18 @@ public class Jogo {
             if (!(casa1.getStrCor().equals("")) && (blnBrancasJogam == true ? casa1.getStrCor().equals("BRANCO") : casa1.getStrCor().equals("PRETO"))) {
                 i = 1;
             }
+            if(sala>0){
+                if (!(casa1.getStrCor().equals("")) && ((blnBrancasJogam == true)? casa1.getStrCor().equals("BRANCO") : casa1.getStrCor().equals("PRETO"))) {
+                    i = 0;
+                    if(jogador1.getNome().equals(currentUser.getEmail().toString()) && blnBrancasJogam) {
+                        i = 1;
+                    }
+                    else if(jogador2.getNome().equals(currentUser.getEmail().toString()) && !blnBrancasJogam) {
+                        i = 1;
+                    }
+                }
+            }
+
         }
 
         if (i == 0) {
