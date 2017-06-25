@@ -2,17 +2,26 @@ package com.matheus.jogodedamas.Classes;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.matheus.jogodedamas.MainActivity;
 import com.matheus.jogodedamas.PlacarActivity;
 import com.matheus.jogodedamas.R;
 import com.matheus.jogodedamas.adapterLances;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,21 +36,212 @@ public class Jogo {
     private List<Lance> listLance = new ArrayList<>();
     private Context contexto;
     private adapterLances adapter;
+    private int sala = 0;
     private String x = "";
     private String y = "";
     private Casa casa1;
     private Casa casa2;
     Jogador jogador1;
     Jogador jogador2;
+    String lanceAnterior="";
     private boolean blnBrancasJogam = true;
+    FirebaseUser currentUser;
+    private FirebaseAuth mAuth;
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    final DatabaseReference myRefBranco;
+    final DatabaseReference myRefPreto;
 
-    public Jogo(Context contexto, Jogador jogador1, Jogador jogador2, adapterLances adapter, List<Lance> lances ) {
+
+    public Jogo(final Context contexto, final Jogador jogador1, final Jogador jogador2, adapterLances adapter, List<Lance> lances, final int sala) {
         this.contexto = contexto;
         this.jogador1 = jogador1;
         this.jogador2 = jogador2;
         this.listLance = lances;
         this.adapter = adapter;
+        this.sala = sala;
+
         inicializaTabuleiro();
+        myRefBranco = database.getReference("jogo/"+sala+"/branco");
+        myRefPreto = database.getReference("jogo/"+sala+"/preto");
+        if(sala>0){
+            mAuth = FirebaseAuth.getInstance();
+            currentUser = mAuth.getCurrentUser();
+            if(jogador2.getNome().equals(currentUser.getEmail().toString())){
+
+            }
+
+            ValueEventListener postListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // Get Post object and use the values to update the UI
+                    if(sala==0){
+                        return;
+                    }
+                    String post = (String) dataSnapshot.getValue();
+
+                    if(!jogador1.getNome().equals(currentUser.getEmail().toString()) ) {
+                        if (post!=null){
+                            if(post.length()==0){
+                                return;
+                            }
+                            if (lanceAnterior.equals(post.toString().substring(0,3) + "-" + post.toString().substring(4,7))){
+                                return;
+                            }
+                            if(verificaSeComePeca( post.toString().substring(0,3),post.toString().substring(4,7))){
+
+                            }
+                            //copiei la de cima mas poderia ser diferente
+                            Casa casa1 = getCasa( post.toString().substring(4,7));
+                            Casa casa2 = getCasa( post.toString().substring(0,3));
+                            lanceAnterior = post.toString().substring(0,3) + "-" + post.toString().substring(4,7);
+
+                            tabuleiro.remove(casa1);
+                            tabuleiro.remove(casa2);
+                            ImageView img;
+                            img = casa1.getImageView();
+                            img.setImageResource(casa2.getlngIdImagemPeca());
+
+                            if (viraDama(casa1.getPosicao())) {
+                                if (blnBrancasJogam) {
+                                    img.setImageResource(R.drawable.damabranca);
+                                    casa1.setLngIdImagemPeca(R.drawable.damabranca);
+                                } else {
+                                    img.setImageResource(R.drawable.damapreta);
+                                    casa1.setLngIdImagemPeca(R.drawable.damapreta);
+                                }
+                                casa1.setDama(true);
+                            } else {
+                                casa1.setDama(casa2.getDama());
+                                casa1.setLngIdImagemPeca(casa2.getlngIdImagemPeca());
+                            }
+
+                            img.setBackgroundColor(contexto.getResources().getColor(R.color.marron));
+                            casa1.setImageView(img);
+                            casa1.setStrCor(casa2.getStrCor());
+                            casa1.setCasaSelecionada(false);
+                            tabuleiro.add(casa1);
+                            //Verifica e seta se vira dama
+
+
+                            img = casa2.getImageView();
+                            img.setImageResource(0);
+                            img.setBackgroundColor(contexto.getResources().getColor(R.color.marron));
+                            casa2.setStrCor("");
+                            casa2.setLngIdImagemPeca(0);
+                            casa2.setImageView(img);
+                            casa2.setCasaSelecionada(false);
+                            tabuleiro.add(casa2);
+
+                            Lance lance = new Lance();
+                            lance.setPeca(casa2.getPeca());
+                            lance.setLance(getLance(casa1.getPosicao()) + "-" + getLance( post.toString().substring(4,7)));
+                            listLance.add(lance);
+
+
+                            blnBrancasJogam = !blnBrancasJogam;
+                            //fim
+
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Getting Post failed, log a message
+                    Log.w("T", "loadPost:onCancelled", databaseError.toException());
+                    // ...
+                }
+            };
+            myRefBranco.addValueEventListener(postListener);
+
+
+            ValueEventListener postListener2 = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // Get Post object and use the values to update the UI
+                    if(sala==0){
+                        return;
+                    }
+                    String post = (String) dataSnapshot.getValue();
+
+                    if(!jogador2.getNome().equals(currentUser.getEmail().toString()) ) {
+                        if (post!=null ){
+                            if(post.length()==0){
+                                return;
+                            }
+                            if (lanceAnterior.equals(post.toString().substring(0,3) + "-" + post.toString().substring(4,7))){
+                                return;
+                            }
+                            lanceAnterior = post.toString().substring(0,3) + "-" + post.toString().substring(4,7);
+                            if(verificaSeComePeca( post.toString().substring(0,3),post.toString().substring(4,7))){
+
+                            }
+                            //copiei la de cima mas poderia ser diferente
+                            Casa casa1 = getCasa( post.toString().substring(4,7));
+                            Casa casa2 = getCasa( post.toString().substring(0,3));
+
+                            tabuleiro.remove(casa1);
+                            tabuleiro.remove(casa2);
+                            ImageView img;
+                            img = casa1.getImageView();
+                            img.setImageResource(casa2.getlngIdImagemPeca());
+
+                            if (viraDama(casa1.getPosicao())) {
+                                if (blnBrancasJogam) {
+                                    img.setImageResource(R.drawable.damabranca);
+                                    casa1.setLngIdImagemPeca(R.drawable.damabranca);
+                                } else {
+                                    img.setImageResource(R.drawable.damapreta);
+                                    casa1.setLngIdImagemPeca(R.drawable.damapreta);
+                                }
+                                casa1.setDama(true);
+                            } else {
+                                casa1.setDama(casa2.getDama());
+                                casa1.setLngIdImagemPeca(casa2.getlngIdImagemPeca());
+                            }
+
+                            img.setBackgroundColor(contexto.getResources().getColor(R.color.marron));
+                            casa1.setImageView(img);
+                            casa1.setStrCor(casa2.getStrCor());
+                            casa1.setCasaSelecionada(false);
+                            tabuleiro.add(casa1);
+                            //Verifica e seta se vira dama
+
+
+                            img = casa2.getImageView();
+                            img.setImageResource(0);
+                            img.setBackgroundColor(contexto.getResources().getColor(R.color.marron));
+                            casa2.setStrCor("");
+                            casa2.setLngIdImagemPeca(0);
+                            casa2.setImageView(img);
+                            casa2.setCasaSelecionada(false);
+                            tabuleiro.add(casa2);
+
+                            Lance lance = new Lance();
+                            lance.setPeca(casa2.getPeca());
+                            lance.setLance(getLance(casa2.getPosicao()) + "-" + getLance( post.toString().substring(4,7)));
+                            listLance.add(lance);
+                            // adapter.notifyDataSetChanged();
+
+                            blnBrancasJogam = !blnBrancasJogam;
+                            //fim
+
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Getting Post failed, log a message
+                    Log.w("T", "loadPost:onCancelled", databaseError.toException());
+                    // ...
+                }
+            };
+            myRefPreto.addValueEventListener(postListener2);
+
+        }
     }
 
     public List<Casa> getTabuleiro() {
@@ -358,6 +558,17 @@ public class Jogo {
             lance.setLance(getLance(this.x) + "-" + getLance(this.y));
             listLance.add(lance);
 
+            if(sala >0){
+                if(jogador1.getNome().equals(currentUser.getEmail().toString()) ) {
+                    //Brancas
+                    myRefBranco.setValue(this.x + "-" + this.y);
+
+                }
+                else{
+                    myRefPreto.setValue(this.x + "-" + this.y);
+                }
+            }
+
 
             tabuleiro.remove(casa1);
             tabuleiro.remove(casa2);
@@ -404,81 +615,87 @@ public class Jogo {
             blnBrancasJogam = !blnBrancasJogam;
 
         }
-       if((!blnBrancasJogam) && (jogador2.getNome().equals("CPU"))){
-           //Seleciona uma peca preta (sorteada)
-           Boolean blnMoveu = false;
-           for (Casa casa:tabuleiro) {
-               if (casa.getStrCor().equals("PRETO")){
-                   List<String> posicoesPossiveis = getPosicoesPosiveis(casa.getPosicao());
-                   for (String strposicao:posicoesPossiveis) {
-                       if (podeSelecionarACasa(strposicao, true)) {
-                           if (validaPosicao(casa.getPosicao(), strposicao)) {
-                               if (verificaSeComePeca(casa.getPosicao(), strposicao)) {
-                                   blnMoveu = true;
+        //online
+        if(sala >0){
 
-                                   //copiei la de cima mas poderia ser diferente
-                                   Casa casa1 = getCasa(strposicao);
-                                   Casa casa2 = getCasa(casa.getPosicao());
+        }
+        else {
+            if ((!blnBrancasJogam) && (jogador2.getNome().equals("CPU"))) {
+                //Seleciona uma peca preta (sorteada)
+                Boolean blnMoveu = false;
+                for (Casa casa : tabuleiro) {
+                    if (casa.getStrCor().equals("PRETO")) {
+                        List<String> posicoesPossiveis = getPosicoesPosiveis(casa.getPosicao());
+                        for (String strposicao : posicoesPossiveis) {
+                            if (podeSelecionarACasa(strposicao, true)) {
+                                if (validaPosicao(casa.getPosicao(), strposicao)) {
+                                    if (verificaSeComePeca(casa.getPosicao(), strposicao)) {
+                                        blnMoveu = true;
 
-                                   tabuleiro.remove(casa1);
-                                   tabuleiro.remove(casa2);
+                                        //copiei la de cima mas poderia ser diferente
+                                        Casa casa1 = getCasa(strposicao);
+                                        Casa casa2 = getCasa(casa.getPosicao());
 
-                                   img = casa1.getImageView();
-                                   img.setImageResource(casa2.getlngIdImagemPeca());
+                                        tabuleiro.remove(casa1);
+                                        tabuleiro.remove(casa2);
 
-                                   if (viraDama(casa1.getPosicao())) {
-                                       if (blnBrancasJogam) {
-                                           img.setImageResource(R.drawable.damabranca);
-                                           casa1.setLngIdImagemPeca(R.drawable.damabranca);
-                                       } else {
-                                           img.setImageResource(R.drawable.damapreta);
-                                           casa1.setLngIdImagemPeca(R.drawable.damapreta);
-                                       }
-                                       casa1.setDama(true);
-                                   } else {
-                                       casa1.setDama(casa2.getDama());
-                                       casa1.setLngIdImagemPeca(casa2.getlngIdImagemPeca());
-                                   }
+                                        img = casa1.getImageView();
+                                        img.setImageResource(casa2.getlngIdImagemPeca());
 
-                                   img.setBackgroundColor(contexto.getResources().getColor(R.color.marron));
-                                   casa1.setImageView(img);
-                                   casa1.setStrCor(casa2.getStrCor());
-                                   casa1.setCasaSelecionada(false);
-                                   tabuleiro.add(casa1);
-                                   //Verifica e seta se vira dama
+                                        if (viraDama(casa1.getPosicao())) {
+                                            if (blnBrancasJogam) {
+                                                img.setImageResource(R.drawable.damabranca);
+                                                casa1.setLngIdImagemPeca(R.drawable.damabranca);
+                                            } else {
+                                                img.setImageResource(R.drawable.damapreta);
+                                                casa1.setLngIdImagemPeca(R.drawable.damapreta);
+                                            }
+                                            casa1.setDama(true);
+                                        } else {
+                                            casa1.setDama(casa2.getDama());
+                                            casa1.setLngIdImagemPeca(casa2.getlngIdImagemPeca());
+                                        }
+
+                                        img.setBackgroundColor(contexto.getResources().getColor(R.color.marron));
+                                        casa1.setImageView(img);
+                                        casa1.setStrCor(casa2.getStrCor());
+                                        casa1.setCasaSelecionada(false);
+                                        tabuleiro.add(casa1);
+                                        //Verifica e seta se vira dama
 
 
-                                   img = casa2.getImageView();
-                                   img.setImageResource(0);
-                                   img.setBackgroundColor(contexto.getResources().getColor(R.color.marron));
-                                   casa2.setStrCor("");
-                                   casa2.setLngIdImagemPeca(0);
-                                   casa2.setImageView(img);
-                                   casa2.setCasaSelecionada(false);
-                                   tabuleiro.add(casa2);
+                                        img = casa2.getImageView();
+                                        img.setImageResource(0);
+                                        img.setBackgroundColor(contexto.getResources().getColor(R.color.marron));
+                                        casa2.setStrCor("");
+                                        casa2.setLngIdImagemPeca(0);
+                                        casa2.setImageView(img);
+                                        casa2.setCasaSelecionada(false);
+                                        tabuleiro.add(casa2);
 
-                                   Lance lance = new Lance();
-                                   lance.setPeca(casa2.getPeca());
-                                   lance.setLance(getLance(casa.getPosicao()) + "-" + getLance(strposicao));
-                                   listLance.add(lance);
+                                        Lance lance = new Lance();
+                                        lance.setPeca(casa2.getPeca());
+                                        lance.setLance(getLance(casa.getPosicao()) + "-" + getLance(strposicao));
+                                        listLance.add(lance);
 
-                                   this.x = "";
-                                   this.y = "";
-                                   blnBrancasJogam = !blnBrancasJogam;
-                                   //fim
+                                        this.x = "";
+                                        this.y = "";
+                                        blnBrancasJogam = !blnBrancasJogam;
+                                        //fim
 
-                                   break;
-                               }
-                           }
-                       }
-                   }
-                   if (blnMoveu){
-                       break;
-                   }
-               }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        if (blnMoveu) {
+                            break;
+                        }
+                    }
 
-           }
-       }
+                }
+            }
+        }
     }
 
     private Casa getCasa(String posicao) {
